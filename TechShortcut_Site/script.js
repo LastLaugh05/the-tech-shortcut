@@ -25,30 +25,46 @@ links.forEach(link => {
 });
 
 // ==========================================================================
-// 2. CUSTOM GLOWING CURSOR LOGIC
+// 2. CUSTOM GLOWING CURSOR LOGIC (Optimized for Mobile)
 // ==========================================================================
 const cursor = document.querySelector('.custom-cursor');
 
-document.addEventListener('mousemove', (e) => {
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top = e.clientY + 'px';
-});
-
-// Make cursor expand when hovering over interactive elements
-const interactables = document.querySelectorAll('a, button, .category-card, .price-card, label, input');
-
-interactables.forEach(item => {
-    item.addEventListener('mouseenter', () => {
-        cursor.style.transform = 'translate(-50%, -50%) scale(2.5)';
-        cursor.style.background = 'transparent';
-        cursor.style.border = '1px solid var(--accent-gold)';
+// Only run the custom cursor logic if the device supports hover (i.e., not a touch screen)
+if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    
+    document.addEventListener('mousemove', (e) => {
+        // Use requestAnimationFrame for buttery smooth performance without lag
+        requestAnimationFrame(() => {
+            if (cursor) {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            }
+        });
     });
-    item.addEventListener('mouseleave', () => {
-        cursor.style.transform = 'translate(-50%, -50%) scale(1)';
-        cursor.style.background = 'var(--accent-gold)';
-        cursor.style.border = 'none';
+
+    // Make cursor expand when hovering over interactive elements
+    const interactables = document.querySelectorAll('a, button, .category-card, .price-card, label, input');
+
+    interactables.forEach(item => {
+        item.addEventListener('mouseenter', () => {
+            if (cursor) {
+                cursor.style.transform = 'translate(-50%, -50%) scale(2.5)';
+                cursor.style.background = 'transparent';
+                cursor.style.border = '1px solid var(--accent-gold)';
+            }
+        });
+        item.addEventListener('mouseleave', () => {
+            if (cursor) {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+                cursor.style.background = 'var(--accent-gold)';
+                cursor.style.border = 'none';
+            }
+        });
     });
-});
+} else {
+    // Completely remove the cursor element from the DOM on mobile to save memory
+    if(cursor) cursor.remove();
+}
 
 // ==========================================================================
 // 3. SCROLL REVEAL ANIMATIONS (Intersection Observer)
