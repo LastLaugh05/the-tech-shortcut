@@ -902,3 +902,35 @@ h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: 800; letter-spac
 .order-modal-overlay.active .order-modal-box {
     transform: translateY(0) scale(1);
 }
+
+/* ==========================================================================
+   🚀 ULTIMATE MOBILE PERFORMANCE PATCH
+   ========================================================================== */
+@media (max-width: 900px) {
+    /* 1. Stop the heavy background grid from rendering/moving */
+    .bg-grid {
+        background-image: none !important;
+        mask-image: none !important;
+        -webkit-mask-image: none !important;
+        background-color: #050505 !important;
+    }
+
+    /* 2. Disable heavy glassmorphism blurs which kill mobile GPUs */
+    * {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+
+    /* 3. Make modal background solid instead of blurred */
+    .order-modal-overlay {
+        background: rgba(5, 5, 5, 0.98) !important;
+    }
+    .order-modal-box {
+        background: #0f0f0f !important;
+    }
+
+    /* 4. Simplify category/product card backgrounds */
+    .category-card, .product-card, .price-card, .navbar.scrolled {
+        background: rgba(15, 15, 15, 0.95) !important;
+    }
+}
